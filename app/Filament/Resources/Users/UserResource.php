@@ -31,7 +31,7 @@ class UserResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static string | UnitEnum | null $navigationGroup = 'User Management';
-    
+
     protected static ?string $recordTitleAttribute = 'User';
 
     public static function form(Schema $schema): Schema
@@ -72,6 +72,7 @@ class UserResource extends Resource
                         Select::make('accountType')
                             ->required()
                             ->options([
+                                'ADMIN'   => 'ADMIN',
                                 'MEMBER' => 'MEMBER',
                                 'CHAPTER' => 'CHAPTER',
                                 'AREA' => 'AREA',

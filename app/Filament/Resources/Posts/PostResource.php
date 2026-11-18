@@ -9,6 +9,8 @@ use App\Filament\Resources\Posts\Schemas\PostForm;
 use App\Filament\Resources\Posts\Tables\PostsTable;
 use App\Models\Post;
 use BackedEnum;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\FileUpload;
@@ -76,7 +78,7 @@ class PostResource extends Resource
                 'style' => 'border: 2px solid var(--gray-500) !important; border-radius: 0.75rem;',
             ])
             ->columns([
-                TextColumn::make('postid')->sortable(),
+                // TextColumn::make('postid')->sortable(),
                 TextColumn::make('postname')->searchable()->sortable(),
                 IconColumn::make('status')->boolean(),
                 TextColumn::make('created_at')->dateTime()->sortable(),
@@ -85,8 +87,20 @@ class PostResource extends Resource
                 //
             ])
             ->actions([
-                EditAction::make(),
-                ViewAction::make(),
+                ActionGroup::make([
+                    EditAction::make()
+                        ->label('Update'),
+                    ViewAction::make()
+                        ->label('View'),
+                    DeleteAction::make()
+                        ->label('Remove'),
+                ])
+                    ->label('Action')
+                    ->icon('heroicon-m-chevron-down')
+                    ->button()
+                    ->size('xs')
+                    ->outlined()
+                    ->color('danger'),
             ]);
         // ->bulkActions([
         //     BulkActionGroup::make([

@@ -2,11 +2,7 @@
 
 namespace App\Filament\Resources\Areas;
 
-use App\Filament\Resources\Areas\Pages\CreateArea;
-use App\Filament\Resources\Areas\Pages\EditArea;
 use App\Filament\Resources\Areas\Pages\ListAreas;
-use App\Filament\Resources\Areas\Schemas\AreaForm;
-use App\Filament\Resources\Areas\Tables\AreasTable;
 use App\Models\Area;
 use BackedEnum;
 use Filament\Actions\ActionGroup;

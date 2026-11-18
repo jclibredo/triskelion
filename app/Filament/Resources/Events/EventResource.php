@@ -12,6 +12,7 @@ use BackedEnum;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
@@ -81,7 +82,7 @@ class EventResource extends Resource
                 'style' => 'border: 2px solid var(--gray-500) !important; border-radius: 0.75rem;',
             ])
             ->columns([
-                TextColumn::make('eventid')->sortable(),
+                // TextColumn::make('eventid')->sortable(),
                 TextColumn::make('eventname')->searchable()->sortable(),
                 TextColumn::make('eventdate')->date()->sortable(),
                 IconColumn::make('status')->boolean(),
@@ -94,6 +95,8 @@ class EventResource extends Resource
                 ActionGroup::make([
                     EditAction::make()
                         ->label('Update'),
+                    ViewAction::make()
+                        ->label('View'),
                     DeleteAction::make()
                         ->label('Remove'),
                 ])
@@ -122,8 +125,8 @@ class EventResource extends Resource
     {
         return [
             'index' => ListEvents::route('/'),
-            'create' => CreateEvent::route('/create'),
-            'edit' => EditEvent::route('/{record}/edit'),
+            // 'create' => CreateEvent::route('/create'),
+            // 'edit' => EditEvent::route('/{record}/edit'),
         ];
     }
 }

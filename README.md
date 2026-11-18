@@ -83,47 +83,8 @@ Verify that your public disk configuration in `config/filesystems.php` points to
 php artisan storage:link
 ```
 
-### Step 6: Create and Register the Admin Seeder
-Ensure your default admin user seeder is created at `database/seeders/AdminUserSeeder.php`:
-```php
-<?php
-
-namespace Database\Seeders;
-
-use App\Models\User;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-
-class AdminUserSeeder extends Seeder
-{
-    public function run(): void
-    {
-        User::firstOrCreate(
-            ['email' => 'admin@triskelion.org'],
-            [
-                'name'         => 'System Administrator',
-                'password'     => Hash::make('AdminPassword123!'),
-                'accountType'  => 'ADMIN',
-                'typeid'       => null,
-                'mobilenumber' => 9123456789,
-                'status'       => true,
-            ]
-        );
-    }
-}
-```
-And make sure it is registered inside `database/seeders/DatabaseSeeder.php`:
-```php
-public function run(): void
-{
-    $this->call([
-        AdminUserSeeder::class,
-    ]);
-}
-```
-
-### Step 7: Run Migrations and Database Seeders
-Run your database migrations and execute the deployment seeders to populate your database and create your default system admin user:
+### Step 6: Run Migrations and Database Seeders
+Run your database migrations and execute the database seeders to populate your database and create your default system admin user:
 * **For a fresh database wipe & re-seed:**
   ```bash
   php artisan migrate:fresh --seed
@@ -133,14 +94,14 @@ Run your database migrations and execute the deployment seeders to populate your
   php artisan db:seed --class=AdminUserSeeder
   ```
 
-### Step 8: Clear Caches and Optimize
+### Step 7: Clear Caches and Optimize
 Clear out any cached configurations or compiled assets:
 ```bash
 php artisan optimize:clear
 php artisan filament:cache-clear
 ```
 
-### Step 9: Start the Local Development Server
+### Step 8: Start the Local Development Server
 Launch the built-in Laravel development server:
 ```bash
 php artisan serve

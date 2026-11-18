@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,7 +41,21 @@ class User extends Authenticatable
             'status' => 'boolean',
         ];
     }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if (! $this->status) {
+            return false;
+        }
 
+        return match ($panel->getId()) {
+            'admin'   => $this->accountType === 'ADMIN',
+            'council' => $this->accountType === 'COUNCIL',
+            'area'    => $this->accountType === 'AREA',
+            'chapter' => $this->accountType === 'CHAPTER',
+            'member'  => $this->accountType === 'MEMBER' || is_null($this->accountType),
+            default   => false,
+        };
+    }
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class, 'memberid', 'memberid');

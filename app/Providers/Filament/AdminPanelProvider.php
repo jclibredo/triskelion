@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Triskelion System Admin')
             ->passwordReset()
             ->colors([
                 'primary' => Color::Slate,
@@ -73,7 +74,7 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Logs')
                     ->icon('heroicon-o-list-bullet')
                     ->collapsible(true),
-                    
+
             ])
             ->authMiddleware([
                 Authenticate::class,

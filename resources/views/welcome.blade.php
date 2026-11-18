@@ -39,13 +39,65 @@
             <!-- Portal CTA -->
             <div class="flex items-center gap-3">
                 @auth
+                @if(auth()->user()->accountType === 'ADMIN')
                 <a href="{{ url('/admin') }}" class="px-5 py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-zinc-950 font-semibold text-sm transition shadow-lg shadow-yellow-500/20">
                     Go to Admin Panel &rarr;
                 </a>
                 @else
-                <a href="{{ url('/admin/login') }}" class="px-5 py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-zinc-950 font-semibold text-sm transition shadow-lg shadow-yellow-500/20">
-                    Member / Officer Login
+                <a href="{{ url('/portal') }}" class="px-5 py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-zinc-950 font-semibold text-sm transition shadow-lg shadow-yellow-500/20">
+                    Go to Member Portal &rarr;
                 </a>
+                @endif
+                @else
+                <div class="relative" id="loginDropdownWrapper">
+                    <button
+                        type="button"
+                        id="loginDropdownBtn"
+                        onclick="toggleLoginDropdown()"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-zinc-950 font-semibold text-sm transition shadow-lg shadow-yellow-500/20 cursor-pointer">
+                        <span>Login</span>
+                        <svg id="loginDropdownChevron" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div
+                        id="loginDropdownMenu"
+                        class="hidden absolute right-0 mt-2.5 w-64 rounded-xl bg-zinc-900 border border-yellow-500/30 shadow-2xl shadow-black/80 overflow-hidden z-50">
+                        <div class="px-4 py-2.5 border-b border-zinc-800">
+                            <span class="text-[11px] font-semibold uppercase tracking-widest text-zinc-400">Select Account Type</span>
+                        </div>
+
+                        <div class="p-1.5 space-y-1">
+                            <!-- Member / Officer Portal Login -->
+                            <a href="{{ url('/portal/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
+                                <div class="w-8 h-8 rounded-lg bg-yellow-500/15 border border-yellow-500/30 flex items-center justify-center text-yellow-400 shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold text-white group-hover:text-yellow-400 transition">Member / Officer</div>
+                                    <div class="text-xs text-zinc-400">Chapter, Area, Council &amp; Member</div>
+                                </div>
+                            </a>
+
+                            <!-- System Admin Login -->
+                            <a href="{{ url('/admin/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
+                                <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 group-hover:border-yellow-500/30 flex items-center justify-center text-yellow-400 shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold text-white group-hover:text-yellow-400 transition">System Administrator</div>
+                                    <div class="text-xs text-zinc-400">Central Admin Control Panel</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 @endauth
             </div>
         </div>
@@ -149,9 +201,9 @@
             <div class="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-yellow-500/30 scrollbar-track-zinc-900">
                 @foreach($events as $event)
                 @php
-                        $photo = is_array($event->eventphotos) && count($event->eventphotos) > 0
-                                ? asset('storage/' . $event->eventphotos[0])
-                                : null;
+                $photo = is_array($event->eventphotos) && count($event->eventphotos) > 0
+                ? asset('storage/' . $event->eventphotos[0])
+                : null;
                 @endphp
                 <div class="min-w-[320px] max-w-[350px] flex-1 rounded-2xl overflow-hidden bg-zinc-900 border gold-border gold-glow transition flex flex-col snap-start shrink-0">
                     @if($photo)
@@ -195,9 +247,9 @@
             <div class="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-yellow-500/30 scrollbar-track-zinc-900">
                 @foreach($posts as $post)
                 @php
-                    $postPhoto = is_array($post->postphotos) && count($post->postphotos) > 0
-                    ? asset('storage/' . $post->postphotos[0])
-                    : null;
+                $postPhoto = is_array($post->postphotos) && count($post->postphotos) > 0
+                ? asset('storage/' . $post->postphotos[0])
+                : null;
                 @endphp
                 <article class="min-w-[320px] max-w-[350px] flex-1 rounded-2xl overflow-hidden bg-zinc-900/70 border gold-border gold-glow transition flex flex-col snap-start shrink-0">
                     @if($postPhoto)
@@ -235,7 +287,25 @@
             </div>
         </div>
     </footer>
+    <script>
+        function toggleLoginDropdown() {
+            const menu = document.getElementById('loginDropdownMenu');
+            const chevron = document.getElementById('loginDropdownChevron');
+            menu.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
 
+        document.addEventListener('click', function(event) {
+            const wrapper = document.getElementById('loginDropdownWrapper');
+            const menu = document.getElementById('loginDropdownMenu');
+            const chevron = document.getElementById('loginDropdownChevron');
+
+            if (wrapper && !wrapper.contains(event.target)) {
+                menu.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            }
+        });
+    </script>
 </body>
 
 </html>

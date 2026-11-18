@@ -55,6 +55,11 @@ class MemberPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->maxContentWidth('full')
+            ->breadcrumbs()
+            ->darkmode(false)
+            ->spa();
     }
 }

@@ -57,6 +57,11 @@ class AreaPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->maxContentWidth('full')
+            ->breadcrumbs()
+            ->darkmode(false)
+            ->spa();
     }
 }

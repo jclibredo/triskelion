@@ -39,15 +39,18 @@
             <!-- Portal CTA -->
             <div class="flex items-center gap-3">
                 @auth
-                @if(auth()->user()->accountType === 'ADMIN')
-                <a href="{{ url('/admin') }}" class="px-5 py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-zinc-950 font-semibold text-sm transition shadow-lg shadow-yellow-500/20">
-                    Go to Admin Panel &rarr;
+                @php
+                $dashboardUrl = match (auth()->user()->accountType) {
+                'ADMIN' => url('/admin'),
+                'COUNCIL' => url('/council'),
+                'AREA' => url('/area'),
+                'CHAPTER' => url('/chapter'),
+                default => url('/member'),
+                };
+                @endphp
+                <a href="{{ $dashboardUrl }}" class="px-5 py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-zinc-950 font-semibold text-sm transition shadow-lg shadow-yellow-500/20">
+                    Go to Dashboard &rarr;
                 </a>
-                @else
-                <a href="{{ url('/portal') }}" class="px-5 py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-zinc-950 font-semibold text-sm transition shadow-lg shadow-yellow-500/20">
-                    Go to Member Portal &rarr;
-                </a>
-                @endif
                 @else
                 <div class="relative" id="loginDropdownWrapper">
                     <button
@@ -61,38 +64,69 @@
                         </svg>
                     </button>
 
-                    <!-- Dropdown Menu -->
+                    <!-- 5-Role Dropdown Menu -->
                     <div
                         id="loginDropdownMenu"
-                        class="hidden absolute right-0 mt-2.5 w-64 rounded-xl bg-zinc-900 border border-yellow-500/30 shadow-2xl shadow-black/80 overflow-hidden z-50">
+                        class="hidden absolute right-0 mt-2.5 w-72 rounded-xl bg-zinc-900 border border-yellow-500/30 shadow-2xl shadow-black/80 overflow-hidden z-50">
                         <div class="px-4 py-2.5 border-b border-zinc-800">
-                            <span class="text-[11px] font-semibold uppercase tracking-widest text-zinc-400">Select Account Type</span>
+                            <span class="text-[11px] font-semibold uppercase tracking-widest text-zinc-400">Select Account Login</span>
                         </div>
 
                         <div class="p-1.5 space-y-1">
-                            <!-- Member / Officer Portal Login -->
-                            <a href="{{ url('/portal/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
-                                <div class="w-8 h-8 rounded-lg bg-yellow-500/15 border border-yellow-500/30 flex items-center justify-center text-yellow-400 shrink-0 mt-0.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
+                            <!-- 1. Member Login -->
+                            <a href="{{ url('/member/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
+                                <div class="w-8 h-8 rounded-lg bg-yellow-500/15 border border-yellow-500/30 flex items-center justify-center text-yellow-400 font-display font-bold text-xs shrink-0 mt-0.5">
+                                    M
                                 </div>
                                 <div>
-                                    <div class="text-sm font-semibold text-white group-hover:text-yellow-400 transition">Member / Officer</div>
-                                    <div class="text-xs text-zinc-400">Chapter, Area, Council &amp; Member</div>
+                                    <div class="text-sm font-semibold text-white group-hover:text-yellow-400 transition">Member Login</div>
+                                    <div class="text-xs text-zinc-400">Personal profile, events &amp; updates</div>
                                 </div>
                             </a>
 
-                            <!-- System Admin Login -->
-                            <a href="{{ url('/admin/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
-                                <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 group-hover:border-yellow-500/30 flex items-center justify-center text-yellow-400 shrink-0 mt-0.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
+                            <!-- 2. Chapter Login -->
+                            <a href="{{ url('/chapter/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
+                                <div class="w-8 h-8 rounded-lg bg-yellow-500/15 border border-yellow-500/30 flex items-center justify-center text-yellow-400 font-display font-bold text-xs shrink-0 mt-0.5">
+                                    CH
                                 </div>
                                 <div>
-                                    <div class="text-sm font-semibold text-white group-hover:text-yellow-400 transition">System Administrator</div>
-                                    <div class="text-xs text-zinc-400">Central Admin Control Panel</div>
+                                    <div class="text-sm font-semibold text-white group-hover:text-yellow-400 transition">Chapter Login</div>
+                                    <div class="text-xs text-zinc-400">Chapter officers &amp; member roster</div>
+                                </div>
+                            </a>
+
+                            <!-- 3. Area Login -->
+                            <a href="{{ url('/area/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
+                                <div class="w-8 h-8 rounded-lg bg-yellow-500/15 border border-yellow-500/30 flex items-center justify-center text-yellow-400 font-display font-bold text-xs shrink-0 mt-0.5">
+                                    AR
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold text-white group-hover:text-yellow-400 transition">Area Login</div>
+                                    <div class="text-xs text-zinc-400">Area jurisdiction &amp; chapters</div>
+                                </div>
+                            </a>
+
+                            <!-- 4. Council Login -->
+                            <a href="{{ url('/council/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
+                                <div class="w-8 h-8 rounded-lg bg-yellow-500/15 border border-yellow-500/30 flex items-center justify-center text-yellow-400 font-display font-bold text-xs shrink-0 mt-0.5">
+                                    CO
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold text-white group-hover:text-yellow-400 transition">Council Login</div>
+                                    <div class="text-xs text-zinc-400">Council governance &amp; directives</div>
+                                </div>
+                            </a>
+
+                            <div class="border-t border-zinc-800 my-1"></div>
+
+                            <!-- 5. System Admin Login -->
+                            <a href="{{ url('/admin/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
+                                <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 group-hover:border-yellow-500/30 flex items-center justify-center text-yellow-400 font-display font-bold text-xs shrink-0 mt-0.5">
+                                    AD
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold text-white group-hover:text-yellow-400 transition">Admin Login</div>
+                                    <div class="text-xs text-zinc-400">System-wide master control</div>
                                 </div>
                             </a>
                         </div>

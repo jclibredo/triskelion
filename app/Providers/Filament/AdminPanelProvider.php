@@ -6,6 +6,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -28,9 +29,12 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->passwordReset()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Slate,
             ])
+            ->brandLogo(asset('images/Tau_Gamma_Phi_seal.png'))
+            ->brandLogoHeight('3.5rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -52,8 +56,32 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Utility')
+                    ->icon('heroicon-o-adjustments-horizontal')
+                    ->collapsible(true),
+                NavigationGroup::make()
+                    ->label('User Management')
+                    ->icon('heroicon-o-user-group')
+                    ->collapsible(true),
+                NavigationGroup::make()
+                    ->label('Archive')
+                    ->icon('heroicon-o-archive-box')
+                    ->collapsible(true),
+                NavigationGroup::make()
+                    ->label('Logs')
+                    ->icon('heroicon-o-list-bullet')
+                    ->collapsible(true),
+                    
+            ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->maxContentWidth('full')
+            ->breadcrumbs()
+            ->darkmode(false)
+            ->spa();
     }
 }

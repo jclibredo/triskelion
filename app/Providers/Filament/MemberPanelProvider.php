@@ -29,6 +29,8 @@ class MemberPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->login()
+            ->brandName('Triskelion Member Portal')
             ->passwordReset()
             ->brandLogo(asset('images/Tau_Gamma_Phi_seal.png'))
             ->brandLogoHeight('3.5rem')

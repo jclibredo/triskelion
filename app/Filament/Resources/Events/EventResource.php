@@ -66,6 +66,7 @@ class EventResource extends Resource
                             ->multiple()
                             ->reorderable()
                             ->panelLayout('grid')
+                            ->disk('public')
                             ->directory('events-photos')
                             ->columnSpanFull(),
                     ])->columns(2)

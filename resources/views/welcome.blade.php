@@ -116,9 +116,7 @@
                                     <div class="text-xs text-zinc-400">Council governance &amp; directives</div>
                                 </div>
                             </a>
-
                             <div class="border-t border-zinc-800 my-1"></div>
-
                             <!-- 5. System Admin Login -->
                             <a href="{{ url('/admin/login') }}" class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-500/10 group transition">
                                 <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 group-hover:border-yellow-500/30 flex items-center justify-center text-yellow-400 font-display font-bold text-xs shrink-0 mt-0.5">

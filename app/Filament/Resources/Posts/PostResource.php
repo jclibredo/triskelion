@@ -62,6 +62,7 @@ class PostResource extends Resource
                             ->multiple()
                             ->reorderable()
                             ->panelLayout('grid')
+                            ->disk('public')
                             ->directory('posts-photos')
                             ->columnSpanFull(),
                     ])->columns(2)
